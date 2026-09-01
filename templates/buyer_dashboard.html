@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ t('welcome') }}, {{ current_user.name }} 🛒</h2>
+
+{% if notifications %}
+<div class="card notif-card">
+  <h3>🔔 {{ t('notifications') }}</h3>
+  {% for n in notifications %}
+    <div class="notif-item">
+      <span>{{ n.message }}</span>
+      <a href="{{ url_for('mark_notification_read', notif_id=n.id) }}" class="mark-read">✓</a>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<a href="{{ url_for('buyer_search') }}" class="btn btn-primary">🔍 {{ t('search_products') }}</a>
+
+<h3>{{ t('orders') }}</h3>
+<table class="data-table">
+  <tr><th>{{ t('product_name') }}</th><th>{{ t('quantity_kg') }}</th><th>₹</th><th>{{ t('status') }}</th><th></th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.product.name if o.product else '-' }}</td>
+    <td>{{ o.quantity_kg }}</td>
+    <td>{{ o.total_price }}</td>
+    <td>{{ o.status }}</td>
+    <td>
+      {% if o.status in ['paid', 'pending'] %}
+      <a href="{{ url_for('rate_order', order_id=o.id) }}" class="btn btn-small">{{ t('rate_this_order') }}</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">No orders yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

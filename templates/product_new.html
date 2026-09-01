@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card form-card">
+  <h2>{{ t('add_product') }}</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <label>{{ t('product_name') }}</label>
+    <input type="text" name="name" required>
+
+    <label>{{ t('category') }}</label>
+    <select name="category" required>
+      <option>Vegetables</option>
+      <option>Fruits</option>
+      <option>Grains</option>
+      <option>Pulses</option>
+      <option>Spices</option>
+      <option>Dairy</option>
+    </select>
+
+    <label>{{ t('description') }}</label>
+    <textarea name="description" rows="2"></textarea>
+
+    <label>{{ t('quantity_kg') }}</label>
+    <input type="number" step="0.1" name="quantity_kg" required>
+
+    <label>{{ t('your_price') }}</label>
+    <input type="number" step="0.1" name="your_price" required>
+
+    <label>{{ t('upload_photo') }} ({{ t('ai_quality_check') }})</label>
+    <input type="file" name="photo" accept="image/*">
+
+    <p class="hint">🤖 The AI will suggest a fair price and grade your product photo automatically after you submit — check your dashboard.</p>
+
+    <button type="submit" class="btn btn-primary">{{ t('submit') }}</button>
+  </form>
+</div>
+{% endblock %}

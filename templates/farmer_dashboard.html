@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ t('welcome') }}, {{ current_user.name }} 👨‍🌾</h2>
+
+{% if notifications %}
+<div class="card notif-card">
+  <h3>🔔 {{ t('notifications') }}</h3>
+  {% for n in notifications %}
+    <div class="notif-item">
+      <span>{{ n.message }}</span>
+      <a href="{{ url_for('mark_notification_read', notif_id=n.id) }}" class="mark-read">✓</a>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="stat-row">
+  <div class="stat-box"><h3>{{ products|length }}</h3><p>{{ t('my_products') }}</p></div>
+  <div class="stat-box"><h3>{{ orders|length }}</h3><p>{{ t('orders') }}</p></div>
+  <div class="stat-box"><h3>⭐ {{ current_user.rating_avg }}</h3><p>({{ current_user.rating_count }})</p></div>
+</div>
+
+<h3>{{ t('my_products') }}</h3>
+<div class="product-grid">
+  {% for p in products %}
+  <div class="product-card">
+    {% if p.photo_path %}<img src="{{ url_for('static', filename=p.photo_path) }}">{% endif %}
+    <h4>{{ p.name }}</h4>
+    <p class="muted">{{ p.category }}</p>
+    <p>{{ p.quantity_kg }} kg &middot; ₹{{ p.price_per_kg }}/kg</p>
+    {% if p.ai_suggested_price %}<p class="ai-tag">🤖 AI: ₹{{ p.ai_suggested_price }}/kg</p>{% endif %}
+    {% if p.quality_grade %}<p class="grade-tag">{{ t('quality_grade') }}: {{ p.quality_grade }} ({{ p.quality_score }})</p>{% endif %}
+    <span class="status-badge status-{{ p.status }}">{{ p.status }}</span>
+  </div>
+  {% else %}
+  <p class="muted">No products listed yet. <a href="{{ url_for('product_new') }}">{{ t('add_product') }}</a></p>
+  {% endfor %}
+</div>
+
+<h3>{{ t('orders') }}</h3>
+<table class="data-table">
+  <tr><th>{{ t('product_name') }}</th><th>{{ t('quantity_kg') }}</th><th>₹</th><th>{{ t('status') }}</th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.product.name if o.product else '-' }}</td>
+    <td>{{ o.quantity_kg }}</td>
+    <td>{{ o.total_price }}</td>
+    <td>{{ o.status }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

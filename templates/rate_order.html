@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card form-card">
+  <h2>⭐ {{ t('rate_this_order') }}</h2>
+  <form method="POST">
+    <label>{{ t('rate_this_order') }}</label>
+    <select name="stars" required>
+      <option value="5">⭐⭐⭐⭐⭐</option>
+      <option value="4">⭐⭐⭐⭐</option>
+      <option value="3">⭐⭐⭐</option>
+      <option value="2">⭐⭐</option>
+      <option value="1">⭐</option>
+    </select>
+    <label>{{ t('feedback') }}</label>
+    <textarea name="feedback" rows="3"></textarea>
+    <button type="submit" class="btn btn-primary">{{ t('submit_rating') }}</button>
+  </form>
+</div>
+{% endblock %}

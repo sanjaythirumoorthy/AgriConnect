@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card detail-card">
+  {% if product.photo_path %}<img src="{{ url_for('static', filename=product.photo_path) }}" class="detail-img">{% endif %}
+  <h2>{{ product.name }}</h2>
+  <p class="muted">{{ product.category }}</p>
+  <p>{{ product.description }}</p>
+  <p><strong>{{ t('quantity_kg') }}:</strong> {{ product.quantity_kg }} kg available</p>
+  <p><strong>₹{{ product.price_per_kg }}/kg</strong></p>
+  {% if product.quality_grade %}
+  <p class="grade-tag">{{ t('quality_grade') }}: {{ product.quality_grade }} ({{ product.quality_score }}/100)</p>
+  {% endif %}
+  <p class="muted">{{ t('farmer') }}: {{ product.farmer.name }} &middot; ⭐ {{ product.farmer.rating_avg }} ({{ product.farmer.rating_count }})</p>
+  <a href="{{ url_for('order_pay', product_id=product.id) }}" class="btn btn-primary">{{ t('buy_now') }}</a>
+</div>
+{% endblock %}

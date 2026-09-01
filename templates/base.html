@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ t('site_name') }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="navbar">
+  <a class="brand" href="{{ url_for('index') }}">🌾 {{ t('site_name') }}</a>
+  <nav>
+    {% if current_user.is_authenticated %}
+      {% if current_user.role == 'farmer' %}
+        <a href="{{ url_for('farmer_dashboard') }}">{{ t('dashboard') }}</a>
+        <a href="{{ url_for('product_new') }}">{{ t('add_product') }}</a>
+        <a href="{{ url_for('farmer_requests') }}">{{ t('requests') }}</a>
+      {% else %}
+        <a href="{{ url_for('buyer_dashboard') }}">{{ t('dashboard') }}</a>
+        <a href="{{ url_for('buyer_search') }}">{{ t('search_products') }}</a>
+      {% endif %}
+      <a href="{{ url_for('transport_view') }}">{{ t('shared_transport') }}</a>
+      <span class="lang-toggle">
+        <a href="{{ url_for('set_language', lang='en') }}" class="{{ 'active' if lang=='en' else '' }}">EN</a>
+        /
+        <a href="{{ url_for('set_language', lang='ta') }}" class="{{ 'active' if lang=='ta' else '' }}">TA</a>
+      </span>
+      <a href="{{ url_for('logout') }}">{{ t('logout') }}</a>
+    {% else %}
+      <span class="lang-toggle">
+        <a href="{{ url_for('set_language', lang='en') }}" class="{{ 'active' if lang=='en' else '' }}">EN</a>
+        /
+        <a href="{{ url_for('set_language', lang='ta') }}" class="{{ 'active' if lang=='ta' else '' }}">TA</a>
+      </span>
+      <a href="{{ url_for('login') }}">{{ t('login') }}</a>
+      <a href="{{ url_for('register') }}" class="btn-nav">{{ t('register') }}</a>
+    {% endif %}
+  </nav>
+</header>
+
+<main class="container">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">
+        {% for m in messages %}<p>{{ m }}</p>{% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>🌾 {{ t('site_name') }} &mdash; {{ t('tagline') }}</p>
+</footer>
+</body>
+</html>

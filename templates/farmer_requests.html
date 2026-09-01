@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📢 {{ t('requests') }}</h2>
+<p class="muted">Buyer demand the platform couldn't match — ranked by how closely it fits what you grow.</p>
+
+<table class="data-table">
+  <tr><th>Request</th><th>Qty needed</th><th>{{ t('match_score') }}</th><th></th></tr>
+  {% for r, score in scored %}
+  <tr>
+    <td>{{ r.product_text }}</td>
+    <td>{{ r.quantity_needed or '-' }}</td>
+    <td>{{ score }}%</td>
+    <td>
+      <form method="POST" action="{{ url_for('respond_request', req_id=r.id) }}">
+        <button class="btn btn-small">{{ t('contact_farmer') }}</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="4" class="muted">No open buyer requests right now.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

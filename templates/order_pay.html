@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card form-card">
+  <h2>{{ product.name }}</h2>
+  <p>₹{{ product.price_per_kg }}/kg &middot; {{ product.quantity_kg }} kg available</p>
+  <form method="POST">
+    <label>{{ t('quantity_kg') }}</label>
+    <input type="number" step="0.1" name="quantity_kg" max="{{ product.quantity_kg }}" required>
+
+    <label>{{ t('payment_method') }}</label>
+    <select name="payment_method" required>
+      <option value="cod">{{ t('cash_on_delivery') }}</option>
+      <option value="online">{{ t('online_payment') }}</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">{{ t('pay_now') }}</button>
+  </form>
+</div>
+{% endblock %}

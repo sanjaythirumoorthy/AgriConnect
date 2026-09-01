@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🚚 {{ t('shared_transport') }}</h2>
+<p class="muted">AI groups nearby active listings into shared truck loads to cut delivery cost for everyone.</p>
+
+<div class="transport-grid">
+  {% for g in groups %}
+  <div class="card transport-group">
+    <h4>Truck load — {{ g.total_kg }} kg</h4>
+    <ul>
+      {% for f in g.farmers %}
+      <li>{{ f.farmer_name }} — {{ f.product }} ({{ f.quantity_kg }}kg) — ₹{{ f.cost_share }}</li>
+      {% endfor %}
+    </ul>
+    <p class="ai-tag">💰 {{ t('estimated_savings') }}: ₹{{ g.estimated_savings }}</p>
+  </div>
+  {% else %}
+  <p class="muted">No active shipments to group right now.</p>
+  {% endfor %}
+</div>
+{% endblock %}
